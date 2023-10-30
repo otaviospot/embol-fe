@@ -6,7 +6,7 @@ import axios from "axios";
     : 'https://flash-cards-backend-rrgomide.glitch.me';
 */
 
-const BASE_URL = "http://localhost:1337/api";
+const BASE_URL = "https://embol-yzffe.ondigitalocean.app/api";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

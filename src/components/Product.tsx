@@ -22,9 +22,12 @@ export default function Product({
     <div className={`productItem w-1/4 h-auto relative flex p-2.5`}>
       <div className="productItemContainer w-full relative justify-between self-stretch flex flex-col items-center p-5 border border-solid border-gray-400 rounded-md hover:shadow-xl hover:border-red-400">
         <Link to={`products/${id}`}>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center relative">
             <div className="producThumb">
-              <img src={`http://localhost:1337${image}`} alt={name} />
+              <img
+                src={`https://embol-yzffe.ondigitalocean.app${image}`}
+                alt={name}
+              />
             </div>
             <h3>
               <Link onClick={() => setOpenCart(false)} to={`products/${id}`}>
