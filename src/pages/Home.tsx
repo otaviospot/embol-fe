@@ -9,7 +9,6 @@ import { MyContext } from "../MyContext";
 export default function Home() {
   const {
     allProducts,
-    handleAddToCart,
     allCategories,
     handleFilterProductsByCategories,
     handleShowAllProducts,
@@ -18,19 +17,19 @@ export default function Home() {
 
   return (
     <section className="flex flex-row">
-      <div className="w-52 p-5 flex flex-col flex-0-auto items-start border-r border-solid border-gray-400">
-        <h2 className="text-xl font-bold text-red-700 mb-3 flex-grow-0">
+      <div className=" w-[366px] flex flex-col flex-0-auto items-start border-r border-solid border-stroke-gray">
+        <h2 className="text-xl w-full font-bold text-blue-one mb-3 flex-grow-0 px-6 py-5 border-b border-solid border-stroke-gray">
           Categorias
         </h2>
         <button
-          className="capitalize text-left"
+          className="capitalize w-full text-left text-gray-one text-lg px-6 py-5 border-b border-solid border-stroke-gray"
           onClick={() => handleShowAllProducts()}
         >
           Todos os Produtos
         </button>
         {allCategories.data?.map((category: any) => (
           <button
-            className="capitalize text-left"
+            className="capitalize w-full text-left text-gray-one text-lg px-6 py-5 border-b border-solid border-stroke-gray"
             onClick={() =>
               handleFilterProductsByCategories(
                 category.attributes?.categoryName
@@ -53,7 +52,6 @@ export default function Home() {
                 product.attributes.default_image.data?.attributes.formats
                   .thumbnail.url
               }
-              handleAddToCart={handleAddToCart}
             />
           ))
         ) : (

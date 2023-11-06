@@ -18,10 +18,8 @@ interface ISingleProduct {
   data: any;
   attributes: any;
   name: string;
-  price: number;
-  descritpion: string;
-  promotionalPrice: number;
-  productGallery: {
+  description: string;
+  image_gallery: {
     data: {
       attributes: {
         formats: {
@@ -34,19 +32,15 @@ interface ISingleProduct {
   };
   id: any;
   sku: string;
-  showPrice?: boolean;
-  stock: number;
 }
 
 export default function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState<ISingleProduct>({
     data: {},
     attributes: {},
-    descritpion: "",
+    description: "",
     name: "",
-    price: 0,
-    promotionalPrice: 0,
-    productGallery: {
+    image_gallery: {
       data: {
         attributes: {
           formats: {
@@ -59,15 +53,12 @@ export default function SingleProduct() {
     },
     id: "",
     sku: "",
-    stock: 0,
-    showPrice: true,
   });
   /* Get productId from URL */
   const { productId } = useParams();
 
   /* Context */
-  const { handleAddToCart, realBr, loading, setLoading } =
-    useContext(MyContext);
+  const { loading, setLoading } = useContext(MyContext);
 
   /* State for loading */
   const floatingCart: boolean = true;
@@ -82,9 +73,8 @@ export default function SingleProduct() {
         const backEndSingleProduct = await apiGetSingleProduct(productId);
         console.log(loading);
         setSingleProduct(backEndSingleProduct);
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -135,14 +125,14 @@ export default function SingleProduct() {
               </button>
               <div className="w-full">
                 <Slider ref={sliderRef} {...slickSettings}>
-                  {singleProduct.data?.attributes?.productGallery?.data?.map(
+                  {singleProduct.data?.attributes?.image_gallery?.data?.map(
                     (image: any) => (
                       <div
                         className="h-90v !flex justify-center center"
                         key={image.id}
                       >
                         <img
-                          src={`http://localhost:1337${image.attributes.url}`}
+                          src={`https://embol-yzffe.ondigitalocean.app${image.attributes.url}`}
                           alt={image.attributes?.name}
                           className="w-auto h-auto max-h-full"
                         />
@@ -154,33 +144,16 @@ export default function SingleProduct() {
             </div>
             <div className="w-1/2 flex-grow flex flex-col border-solid border-l border-gray-400 p-5">
               <h1 className="text-3xl font-bold">
-                {singleProduct.data?.attributes?.name}
+                {singleProduct.data?.attributes?.name_product}
               </h1>
               <span className="text-sm font-bold">
                 sku: {singleProduct.data?.attributes?.sku}
               </span>
-              {singleProduct.data?.attributes?.showPrice && (
-                <div className="productPrice flex flex-row gap-3 items-center">
-                  <span className="price text-sm text-center text-gray-600 line-through">
-                    {realBr.format(singleProduct.data?.attributes?.price)}
-                  </span>
-                  <span className="promotionPrice font-bold text-xl">
-                    {realBr.format(
-                      singleProduct.data?.attributes?.promotionalPrice
-                    )}
-                  </span>
-                </div>
-              )}
-              <button
-                className="rounded-md bg-red-500 text-white p-3 mt-2 hover:bg-red-900"
-                onClick={() => handleAddToCart(singleProduct.data?.id)}
-              >
-                Adicionar ao carrinho
-              </button>
+
               <div className="flex flex-col gap-3 mt-5">
                 <h2 className="text-md font-semibold">Descrição:</h2>
                 <ReactMarkdown>
-                  {singleProduct.data?.attributes?.description}
+                  {singleProduct.data?.attributes?.product_description}
                 </ReactMarkdown>
               </div>
             </div>
