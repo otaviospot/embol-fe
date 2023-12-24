@@ -5,8 +5,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ReactMarkdown from "react-markdown";
+import Loading from "../components/Loading";
 
-import { BarLoader } from "react-spinners";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
 import { apiGetSingleProduct } from "../services/apiService";
@@ -132,7 +132,7 @@ export default function SingleProduct() {
                         key={image.id}
                       >
                         <img
-                          src={`https://embol-yzffe.ondigitalocean.app${image.attributes.url}`}
+                          src={`http://localhost:1337${image.attributes.url}`}
                           alt={image.attributes?.name}
                           className="w-auto h-auto max-h-full"
                         />
@@ -159,9 +159,7 @@ export default function SingleProduct() {
             </div>
           </>
         ) : (
-          <div className="flex items-center h-60v justify-center p-5 pb-14 gap-2.5 flex-auto">
-            <BarLoader loading={loading} color="#ef4444" />
-          </div>
+          <Loading loading={loading} />
         )}
       </section>
     </>

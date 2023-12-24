@@ -3,10 +3,10 @@ import axios from "axios";
 /*const BASE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001'
-    : 'https://flash-cards-backend-rrgomide.glitch.me';
+    : 'https://embol-yzffe.ondigitalocean.app/api';
 */
 
-const BASE_URL = "https://embol-yzffe.ondigitalocean.app/api";
+const BASE_URL = "http://localhost:1337/api";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

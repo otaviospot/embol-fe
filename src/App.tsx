@@ -12,21 +12,30 @@ import {
   apiGetAllCategories,
   apiFilterProductsByCategory,
   apiCreateQuotation,
+  apiSeachProds,
 } from "./services/apiService";
 
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import Products from "./pages/Products";
 import { MyContext } from "./MyContext";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollTop";
+import Search from "./pages/Search";
+import Page from "./pages/Page";
+import Contact from "./pages/Contact";
 
 function App() {
   const [allProducts, setAllProducts] = useState<any>({});
   const [cartProds, setCartProds] = useState<any>([]);
+  const [searchResults, setSearchResults] = useState<any>([]);
+  const [searchResultsPage, setSearchResultsPage] = useState<any>([]);
   const [allCategories, setAllCategories] = useState<any>({});
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchBoxLoading, setSearchBoxLoading] = useState<boolean>(true);
   const realBr = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -109,11 +118,11 @@ function App() {
 
   /* Function for filtering products by category */
 
-  async function handleFilterProductsByCategories(categoryName: string) {
+  async function handleFilterProductsByCategories(categoryId: string) {
     setLoading(true);
     try {
       const backEndProductsFilteredByCategory =
-        await apiFilterProductsByCategory(categoryName);
+        await apiFilterProductsByCategory(categoryId);
 
       setAllProducts(backEndProductsFilteredByCategory);
       setLoading(false);
@@ -179,6 +188,28 @@ function App() {
     }
   };
 
+  /* Function for search products */
+
+  const handleSearchProducts = async (query: string, isPage: boolean) => {
+    // setLoading(true);
+    if (query.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      const backEndQueryProducts = await apiSeachProds(query);
+
+      isPage
+        ? setSearchResultsPage(backEndQueryProducts)
+        : setSearchResults(backEndQueryProducts);
+      setLoading(false);
+      setSearchBoxLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   /* Function for removing products from cart */
 
   const handleRemoveFromCart = (id: any) => {
@@ -226,13 +257,26 @@ function App() {
           realBr,
           loading,
           setLoading,
+          searchBoxLoading,
+          setSearchBoxLoading,
+          searchResults,
+          setSearchResults,
+          handleSearchProducts,
+          setSearchResultsPage,
+          searchResultsPage,
         }}
       >
         <ToastContainer />
-        <Router>
+        <Router basename="/embol">
+          <ScrollToTop />
           <Header />
           <Routes>
             <Route path="/products/:productId" element={<SingleProduct />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/categories/:catId" element={<Products />} />
+            <Route path="/quem-somos" element={<Page pageId={`quemsomos`} />} />
+            <Route path="/contato" element={<Contact />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/" element={<Home />} />
           </Routes>

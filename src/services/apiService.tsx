@@ -5,9 +5,9 @@ export async function apiGetAllProducts() {
   return allProducts;
 }
 
-export async function apiFilterProductsByCategory(categoryName: string) {
+export async function apiFilterProductsByCategory(categoryId: any) {
   const categoryFilterProducts = await read(
-    `/products?filters[category][categoryName][$eq]=${categoryName}&populate=*`
+    `/products?filters[category][id][$eq]=${categoryId}&populate=*`
   );
 
   return categoryFilterProducts;
@@ -18,9 +18,31 @@ export async function apiGetSingleProduct(productId: any) {
   return singleProduct;
 }
 
+export async function apiSeachProds(query: any) {
+  const searchProducts = await read(`/products?_q=${query}&populate=*`);
+  return searchProducts;
+}
+
 export async function apiGetAllCategories() {
   const allCategories = await read("/categories?populate=*");
   return allCategories;
+}
+
+export async function apiGetSingleCategory(catId: any) {
+  const singleCategory = await read(`/categories/${catId}/?populate=*`);
+  return singleCategory;
+}
+
+export async function apiGetSingleType(typeId: any) {
+  const singleTypeContent = await read(`/${typeId}?populate=*`);
+  return singleTypeContent;
+}
+
+export async function apiGetHome() {
+  const singleHome = await read(
+    `/home?populate[small_banners][populate]=*&populate[produtos][populate]=*&populate[home_slider][populate]=*`
+  );
+  return singleHome;
 }
 
 export async function apiCreateQuotation(dataQuotation: any) {
