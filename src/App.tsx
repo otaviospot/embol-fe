@@ -29,6 +29,8 @@ import Contact from "./pages/Contact";
 
 function App() {
   const [allProducts, setAllProducts] = useState<any>({});
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // Estado para a página atual
   const [cartProds, setCartProds] = useState<any>([]);
   const [searchResults, setSearchResults] = useState<any>([]);
   const [searchResultsPage, setSearchResultsPage] = useState<any>([]);
@@ -36,10 +38,15 @@ function App() {
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchBoxLoading, setSearchBoxLoading] = useState<boolean>(true);
+
   const realBr = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
+
+  /* Quantity per page option */
+
+  const qtyPerPage = 5;
 
   /* Toastify Options */
 
@@ -70,10 +77,11 @@ function App() {
   /* Fetch Back End Products Data */
 
   useEffect(() => {
-    async function getAllProducts() {
+    async function getAllProducts(page: number, limit: number) {
       try {
-        const backEndAllProducts = await apiGetAllProducts();
+        const backEndAllProducts = await apiGetAllProducts(page, limit);
 
+        setTotalProducts(backEndAllProducts.meta.pagination.total);
         setAllProducts(backEndAllProducts);
         setLoading(false);
       } catch (error) {
@@ -81,8 +89,8 @@ function App() {
       }
     }
 
-    getAllProducts();
-  }, []);
+    getAllProducts(currentPage, qtyPerPage);
+  }, [currentPage]);
 
   /* Fetch Local Storage Cart Products Data */
 
@@ -101,7 +109,6 @@ function App() {
   }, []);
 
   /* Fetch Back End Categories Data */
-
   useEffect(() => {
     async function getAllCategories() {
       try {
@@ -117,7 +124,6 @@ function App() {
   }, []);
 
   /* Function for filtering products by category */
-
   async function handleFilterProductsByCategories(categoryId: string) {
     setLoading(true);
     try {
@@ -162,12 +168,13 @@ function App() {
 
   /* Function for showing all products when filtered */
 
-  async function handleShowAllProducts() {
+  async function handleShowAllProducts(page: number, limit: number) {
     setLoading(true);
     try {
-      const backEndAllProducts = await apiGetAllProducts();
+      const backEndAllProducts = await apiGetAllProducts(page, limit);
 
       setAllProducts(backEndAllProducts);
+      setTotalProducts(backEndAllProducts.meta.pagination.total);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -236,7 +243,7 @@ function App() {
   };
 
   return (
-    <main className="pt-20">
+    <main className="md:pt-20">
       <MyContext.Provider
         value={{
           allProducts,
@@ -246,6 +253,8 @@ function App() {
           cartProds,
           setCartProds,
           handleShowAllProducts,
+          totalProducts,
+          setTotalProducts,
           handleAddToCart,
           handleRemoveFromCart,
           handleFilterProductsByCategories,
@@ -264,6 +273,9 @@ function App() {
           handleSearchProducts,
           setSearchResultsPage,
           searchResultsPage,
+          qtyPerPage,
+          currentPage,
+          setCurrentPage,
         }}
       >
         <ToastContainer />

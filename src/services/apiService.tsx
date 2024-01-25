@@ -1,13 +1,22 @@
 import { read, create } from "./httpService";
 
-export async function apiGetAllProducts() {
-  const allProducts = await read("/products?populate=*");
+export async function apiGetAllProducts(page: number = 1, limit: number = 10) {
+  const start = (page - 1) * limit;
+  const allProducts = await read(
+    `/products?populate=*&pagination[start]=${start}&pagination[limit]=${limit}`
+  );
+
   return allProducts;
 }
 
-export async function apiFilterProductsByCategory(categoryId: any) {
+export async function apiFilterProductsByCategory(
+  categoryId: any,
+  page: number = 1,
+  limit: number = 10
+) {
+  const start = (page - 1) * limit;
   const categoryFilterProducts = await read(
-    `/products?filters[category][id][$eq]=${categoryId}&populate=*`
+    `/products?filters[category][id][$eq]=${categoryId}&populate=*&pagination[start]=${start}&pagination[limit]=${limit}`
   );
 
   return categoryFilterProducts;

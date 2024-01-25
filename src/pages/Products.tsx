@@ -13,6 +13,7 @@ import {
 
 import CategoryButton from "../components/CategoryButton";
 import Loading from "../components/Loading";
+import Pagination from "../components/Pagination";
 
 export default function Products() {
   const {
@@ -22,6 +23,11 @@ export default function Products() {
     handleShowAllProducts,
     loading,
     setLoading,
+    totalProducts,
+    setTotalProducts,
+    qtyPerPage,
+    currentPage,
+    setCurrentPage,
   } = useContext(MyContext);
 
   const [categoryContent, setCategoryContent] = useState<any>([]);
@@ -35,33 +41,33 @@ export default function Products() {
 
   /* Fetch Back End Single Category Data */
   useEffect(() => {
-    async function getSingleCat() {
-      setLoading(true);
-      try {
-        const backEndSingleCatProds = await apiFilterProductsByCategory(catId);
-        const backEndSingleCat = await apiGetSingleCategory(catId);
-
-        setCategoryContent(backEndSingleCat);
-
-        setAllProducts(backEndSingleCatProds);
-
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     if (catId) {
-      getSingleCat();
-      console.log("catid2: " + catId);
+      getSingleCat(currentPage, qtyPerPage);
     } else {
-      handleShowAllProducts();
+      handleShowAllProducts(currentPage, qtyPerPage);
     }
-  }, [catId]);
+  }, [catId, currentPage]);
+
+  const getSingleCat = async (page: number, limit: number) => {
+    setLoading(true);
+    try {
+      const singleCatContent = await apiFilterProductsByCategory(
+        catId,
+        page,
+        limit
+      );
+      setCategoryContent(await apiGetSingleCategory(catId));
+      setAllProducts(singleCatContent);
+      setTotalProducts(singleCatContent.meta.pagination.total); // Assumindo que você adicionou este estado
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <section className="flex flex-row items-start bg-[#F5F5F5] h-100v-h">
-      <div className="fixed w-[366px] h-100v-h flex flex-col flex-0-auto items-start border-r border-solid border-stroke-gray overflow-auto bg-white">
+    <section className="flex flex-row items-start bg-[#F5F5F5] md:h-100v-h">
+      <div className="fixed w-full -translate-x-full md:translate-x-0 md:w-[366px] h-100v-h flex flex-col flex-0-auto items-start border-r border-solid border-stroke-gray overflow-auto bg-white">
         <h2 className="text-xl w-full font-bold text-blue-one flex-grow-0 px-6 py-5 border-b border-solid border-stroke-gray">
           Categorias
         </h2>
@@ -71,17 +77,26 @@ export default function Products() {
         >
           Todos os Produtos
         </button>
-        {allCategories.data?.map((category: any) => (
-          <CategoryButton
-            id={category.id}
-            key={category.id}
-            name={category.attributes.categoryName}
-            icon={category.attributes.iconcat}
-            iconSize={32}
-          />
-        ))}
+        {allCategories.data?.map((category: any) => {
+          if (
+            !category.attributes.categorias_pais.data ||
+            category.attributes.categorias_pais.data?.length === 0
+          ) {
+            return (
+              <CategoryButton
+                id={category.id}
+                key={category.id}
+                name={category.attributes.categoryName}
+                icon={category.attributes.iconcat}
+                children={category.attributes.category_children}
+                iconSize={32}
+              />
+            );
+          }
+          return null;
+        })}
       </div>
-      <div className="flex flex-auto flex-col p-5 pb-14 pl-[366px] bg-[#F5F5F5]">
+      <div className="flex flex-auto flex-col p-5 pb-14 pl-5 md:pl-[366px] bg-[#F5F5F5]">
         <h1 className="text-2xl font-bold text-blue-one p-5">
           {!loading
             ? catId && categoryContent.data?.attributes.categoryName
@@ -104,6 +119,15 @@ export default function Products() {
             <Loading loading={loading} />
           )}
         </MainProductList>
+        {!loading ? (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalProducts / qtyPerPage)}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </section>
   );

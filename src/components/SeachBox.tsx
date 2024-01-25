@@ -45,7 +45,7 @@ export default function SeachBox() {
   };
 
   return (
-    <div className="group w-1/4 relative">
+    <div className="group w-1/4 relative hidden md:flex">
       <form
         className="flex flex-row items-center justify-center relative"
         onSubmit={handleSubmit}

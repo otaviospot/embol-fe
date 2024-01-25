@@ -18,9 +18,9 @@ export default function CategoryBox({
   return (
     <div
       key={id}
-      className=" p-2 w-1/6 flex-col flex items-center justify-center"
+      className="p-2 w-1/2 md:w-1/6 flex-col self-stretch flex items-center justify-center"
     >
-      <div className="group main-cat-box bg-white w-full flex-col flex items-center justify-center p-5 border border-stroke-gray transition-all hover:bg-blue-one">
+      <div className="group grow main-cat-box bg-white w-full flex-col flex items-center justify-center p-5 border border-stroke-gray transition-all hover:bg-blue-one">
         <Link className="w-full" to={`categories/${id}`}>
           {icon && (
             <span className="text-blue-one transition-all flex justify-center group-hover:text-white">

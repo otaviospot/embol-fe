@@ -23,10 +23,12 @@ export default function Home() {
 
   useEffect(() => {
     async function getHomeContent() {
+      setLoading(true);
       try {
         const backEndHome = await apiGetHome();
 
         setHomeContent(backEndHome);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -58,12 +60,12 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-start bg-[#F5F5F5]">
-      <div className="h-96 bg-gray-500 w-full relative">
+      <div className="h-40 md:h-96 bg-gray-500 w-full relative">
         {!loading ? (
           homeContent.data?.attributes?.home_slider.data?.map(
             (homeSlider: any) => (
               <Slider ref={sliderRef} {...slickSettings}>
-                <div className="h-96 bg-gray-500 w-full overflow-hidden flex justify-center items-center">
+                <div className="h-40 md:h-96 bg-gray-500 w-full overflow-hidden flex justify-center items-center">
                   <img
                     className="object-cover w-full"
                     alt="Top"
@@ -77,37 +79,55 @@ export default function Home() {
           <Loading loading={loading} />
         )}
       </div>
-      <div className="flex flex-col p-10 box-border items-center w-full">
+      <div className="flex flex-col p-5 px-1 md:p-10 box-border items-center w-full">
         <SectionTitle>Navegue por Categoria</SectionTitle>
-        <div className="flex flex-row flex-wrap w-full">
-          {allCategories.data?.map((category: any) => (
-            <CategoryBox
-              key={category.id}
-              id={category.id}
-              name={category.attributes.categoryName}
-              icon={category.attributes.iconcat}
-              iconSize={120}
-            />
-          ))}
+        <div className="flex flex-row items-stretch flex-wrap w-full">
+          {!loading ? (
+            allCategories.data?.map((category: any) => {
+              if (
+                !category.attributes.categorias_pais.data ||
+                category.attributes.categorias_pais.data?.length === 0
+              ) {
+                return (
+                  <CategoryBox
+                    key={category.id}
+                    id={category.id}
+                    name={category.attributes.categoryName}
+                    icon={category.attributes.iconcat}
+                    iconSize={120}
+                  />
+                );
+              }
+              return null;
+            })
+          ) : (
+            <Loading loading={loading} />
+          )}
         </div>
       </div>
 
-      <div className="w-full flex gap-5 justify-center p-5">
-        {homeContent.data?.attributes?.small_banners.map((smallBanner: any) => (
-          <div className="w-1/3">
-            <Link to={smallBanner.single_small_banner_url}>
-              <img
-                src={`http://localhost:1337${smallBanner.single_small_banner.data?.attributes?.url}`}
-                alt="banner"
-              />
-            </Link>
-          </div>
-        ))}
+      <div className="w-full flex flex-col md:flex-row gap-5 justify-center p-5">
+        {!loading ? (
+          homeContent.data?.attributes?.small_banners.map(
+            (smallBanner: any) => (
+              <div className="w-full md:w-1/3">
+                <Link to={smallBanner.single_small_banner_url}>
+                  <img
+                    src={`http://localhost:1337${smallBanner.single_small_banner.data?.attributes?.url}`}
+                    alt="banner"
+                  />
+                </Link>
+              </div>
+            )
+          )
+        ) : (
+          <Loading loading={loading} />
+        )}
       </div>
-      <div className="flex flex-col p-10 box-border items-center w-full">
+      <div className="flex flex-col py-5 px-1 md:py-10 md:px-10 box-border items-center w-full">
         <SectionTitle>Produtos em Destaque</SectionTitle>
 
-        <div className="w-full flex flex-row">
+        <div className="w-full flex flex-row flex-wrap">
           {!loading ? (
             homeContent.data?.attributes?.produtos.data?.map((product: any) => (
               <Product

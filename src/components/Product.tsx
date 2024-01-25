@@ -9,7 +9,7 @@ interface IProduct {
 
 export default function Product({ name, image, id }: IProduct) {
   return (
-    <div className={`productItem w-1/5 h-auto relative flex p-2.5`}>
+    <div className={`productItem w-1/2 md:w-1/5 h-auto relative flex p-2.5`}>
       <div className="productItemContainer bg-white w-full relative justify-between self-stretch flex flex-col items-center p-5 border border-solid border-stroke-gray rounded-md hover:shadow-xl hover:border-blue-one">
         <Link to={`/products/${id}`}>
           <div className="flex flex-col items-center relative">
