@@ -1,16 +1,16 @@
-import style from "../components/page-style.module.css";
+import style from '../components/page-style.module.css';
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 
-import Loading from "../components/Loading";
+import Loading from '../components/Loading';
 
-import PageTitle from "../components/PageTitle";
-import { MyContext } from "../MyContext";
-import { apiGetSingleType } from "../services/apiService";
-import ReactMarkdown from "react-markdown";
+import PageTitle from '../components/PageTitle';
+import { MyContext } from '../MyContext';
+import { apiGetSingleType } from '../services/apiService';
+import ReactMarkdown from 'react-markdown';
 
 export default function Page({ pageId }: any) {
-  const { loading, setLoading } = useContext(MyContext);
+  const { loading, setLoading, FILES_URL } = useContext(MyContext);
 
   const [pageContent, setPageContent] = useState<any>([]);
 
@@ -39,7 +39,7 @@ export default function Page({ pageId }: any) {
           <img
             className="object-cover w-full"
             alt="Top"
-            src={`http://localhost:1337${pageContent.data?.attributes.default_image.data?.attributes.url}`}
+            src={`${FILES_URL}${pageContent.data?.attributes.default_image.data?.attributes.url}`}
           ></img>
         ) : (
           <Loading loading={loading} />

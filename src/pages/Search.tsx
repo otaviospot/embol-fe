@@ -1,17 +1,17 @@
-import { useContext, useEffect } from "react";
-import Loading from "../components/Loading";
-import { useNavigate, Link } from "react-router-dom";
+import { useContext, useEffect } from 'react';
+import Loading from '../components/Loading';
+import { useNavigate, Link } from 'react-router-dom';
 
-import MainProductList from "../components/MainProductList";
-import Product from "../components/Product";
-import { MyContext } from "../MyContext";
+import MainProductList from '../components/MainProductList';
+import Product from '../components/Product';
+import { MyContext } from '../MyContext';
 
 export default function Search() {
   const { searchResultsPage, loading, setLoading } = useContext(MyContext);
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-row items-start bg-[#F5F5F5] h-100v-h">
+    <section className="flex flex-row items-start bg-[#F5F5F5] min-h-100v-h">
       <div className="flex w-full flex-auto flex-col p-5 pb-14 bg-[#F5F5F5]">
         <MainProductList>
           {(searchResultsPage.data?.length === 0 ||

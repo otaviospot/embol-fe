@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { useContext } from 'react';
+import { MyContext } from '../MyContext';
+import { Link } from 'react-router-dom';
 
 interface IProduct {
   key: any;
@@ -8,6 +10,7 @@ interface IProduct {
 }
 
 export default function SearchProductItem({ name, image, id }: IProduct) {
+  const { FILES_URL } = useContext(MyContext);
   return (
     <div className={`productItem w-full h-auto relative flex p-2.5`}>
       <div className="productItemContainer bg-white w-full relative justify-between self-stretch flex flex-col items-center p-5 border border-solid border-stroke-gray rounded-md hover:shadow-xl hover:border-blue-one">
@@ -16,7 +19,7 @@ export default function SearchProductItem({ name, image, id }: IProduct) {
             <div className="producThumb">
               <img
                 className="max-w-[40px]"
-                src={`http://localhost:1337${image}`}
+                src={`${FILES_URL}${image}`}
                 alt={name}
               />
             </div>

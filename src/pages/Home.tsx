@@ -1,21 +1,22 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-import Loading from "../components/Loading";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import Loading from '../components/Loading';
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import Product from "../components/Product";
-import SectionTitle from "../components/SectionTitle";
-import CategoryBox from "../components/CategoryBox";
-import { MyContext } from "../MyContext";
-import { apiGetHome } from "../services/apiService";
+import Product from '../components/Product';
+import SectionTitle from '../components/SectionTitle';
+import CategoryBox from '../components/CategoryBox';
+import { MyContext } from '../MyContext';
+import { apiGetHome } from '../services/apiService';
 
 export default function Home() {
-  const { allCategories, loading, setLoading } = useContext(MyContext);
+  const { allCategories, loading, setLoading, FILES_URL } =
+    useContext(MyContext);
 
   const [homeContent, setHomeContent] = useState<any>([]);
 
@@ -60,16 +61,16 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-start bg-[#F5F5F5]">
-      <div className="h-40 md:h-96 bg-gray-500 w-full relative">
+      <div className="h-60 md:h-96 w-full relative">
         {!loading ? (
           homeContent.data?.attributes?.home_slider.data?.map(
             (homeSlider: any) => (
               <Slider ref={sliderRef} {...slickSettings}>
-                <div className="h-40 md:h-96 bg-gray-500 w-full overflow-hidden flex justify-center items-center">
+                <div className="h-60 md:h-96 w-full overflow-hidden flex justify-center items-center">
                   <img
-                    className="object-cover w-full"
+                    className="object-cover w-full h-full md:h-auto"
                     alt="Top"
-                    src={`http://localhost:1337${homeSlider.attributes.url}`}
+                    src={`${FILES_URL}${homeSlider.attributes.url}`}
                   ></img>
                 </div>
               </Slider>
@@ -113,7 +114,7 @@ export default function Home() {
               <div className="w-full md:w-1/3">
                 <Link to={smallBanner.single_small_banner_url}>
                   <img
-                    src={`http://localhost:1337${smallBanner.single_small_banner.data?.attributes?.url}`}
+                    src={`${FILES_URL}${smallBanner.single_small_banner.data?.attributes?.url}`}
                     alt="banner"
                   />
                 </Link>

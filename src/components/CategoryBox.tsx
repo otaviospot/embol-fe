@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import IconComponent from "./IconComponent";
+import { Link } from 'react-router-dom';
+import IconComponent from './IconComponent';
 
 interface ICategoryBox {
   key: any;
@@ -28,7 +28,7 @@ export default function CategoryBox({
             </span>
           )}
 
-          <h4 className="text-center transition-all group-hover:text-white">
+          <h4 className="text-center transition-all group-hover:text-white mt-5">
             {name}
           </h4>
         </Link>

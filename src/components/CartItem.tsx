@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { MyContext } from '../MyContext';
+
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 interface ICartItem {
@@ -13,14 +16,11 @@ export default function CartItem({
   image,
   handleRemoveFromCart,
 }: ICartItem) {
+  const { FILES_URL } = useContext(MyContext);
   return (
     <div className="flex items-center justify-between p-2 border border-solid border-gray-400 rounded-md">
       <div className="">
-        <img
-          className="w-10"
-          src={`http://localhost:1337${image}`}
-          alt={name}
-        />
+        <img className="w-10" src={`${FILES_URL}${image}`} alt={name} />
       </div>
       <span className="flex-grow px-5">{name}</span>
       <button onClick={() => handleRemoveFromCart(id)}>

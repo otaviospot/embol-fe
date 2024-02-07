@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { Slide } from "react-toastify";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { Slide } from 'react-toastify';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 
-import "./App.css";
+import './App.css';
 
 import {
   apiGetAllProducts,
@@ -13,19 +13,19 @@ import {
   apiFilterProductsByCategory,
   apiCreateQuotation,
   apiSeachProds,
-} from "./services/apiService";
+} from './services/apiService';
 
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import { MyContext } from "./MyContext";
-import SingleProduct from "./pages/SingleProduct";
-import Cart from "./pages/Cart";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollTop";
-import Search from "./pages/Search";
-import Page from "./pages/Page";
-import Contact from "./pages/Contact";
+import Header from './components/Header';
+import Home from './pages/Home';
+import Products from './pages/Products';
+import { MyContext } from './MyContext';
+import SingleProduct from './pages/SingleProduct';
+import Cart from './pages/Cart';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollTop';
+import Search from './pages/Search';
+import Page from './pages/Page';
+import Contact from './pages/Contact';
 
 function App() {
   const [allProducts, setAllProducts] = useState<any>({});
@@ -38,20 +38,30 @@ function App() {
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchBoxLoading, setSearchBoxLoading] = useState<boolean>(true);
+  const [isCatOpen, setIsCatOpen] = useState(false);
 
-  const realBr = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
+  const realBr = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
   });
+
+  const FILES_URL =
+    process.env.NODE_ENV === 'production'
+      ? process.env.REACT_APP_FILES_URL_PROD
+      : process.env.REACT_APP_FILES_URL_DEV;
+
+  const handleCatOpen = () => {
+    setIsCatOpen(!isCatOpen);
+  };
 
   /* Quantity per page option */
 
-  const qtyPerPage = 5;
+  const qtyPerPage = 20;
 
   /* Toastify Options */
 
   const toastOptions: object = {
-    position: "top-right",
+    position: 'top-right',
     autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -59,11 +69,11 @@ function App() {
     draggable: true,
     transition: Slide,
     progress: undefined,
-    theme: "light",
+    theme: 'light',
   };
 
   const toastOptionsQuotationSuccess: object = {
-    position: "top-right",
+    position: 'top-right',
     autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -71,26 +81,10 @@ function App() {
     draggable: true,
     transition: Slide,
     progress: undefined,
-    theme: "light",
+    theme: 'light',
   };
 
   /* Fetch Back End Products Data */
-
-  useEffect(() => {
-    async function getAllProducts(page: number, limit: number) {
-      try {
-        const backEndAllProducts = await apiGetAllProducts(page, limit);
-
-        setTotalProducts(backEndAllProducts.meta.pagination.total);
-        setAllProducts(backEndAllProducts);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    getAllProducts(currentPage, qtyPerPage);
-  }, [currentPage]);
 
   /* Fetch Local Storage Cart Products Data */
 
@@ -151,16 +145,16 @@ function App() {
 
     try {
       const newQuotation = await apiCreateQuotation(dataQuotation);
-      console.log("Cotação criada com sucesso:", newQuotation);
+      console.log('Cotação criada com sucesso:', newQuotation);
       toast.success(
-        "Cotação enviada com sucesso! Aguarde o contato de um de nossos vendedores",
+        'Cotação enviada com sucesso! Aguarde o contato de um de nossos vendedores',
         toastOptionsQuotationSuccess
       );
       clearCart(false);
       onSuccess();
     } catch (error: any) {
       console.error(
-        "Erro ao criar cotação:",
+        'Erro ao criar cotação:',
         error.response?.data || error.message
       );
     }
@@ -187,11 +181,11 @@ function App() {
     const product = allProducts.data.find((prod: any) => prod.id === id);
     const storageProd = localStorage.getItem(id);
     if (storageProd) {
-      toast.warn("Produto já adicionado ao carrinho", toastOptions);
+      toast.warn('Produto já adicionado ao carrinho', toastOptions);
     } else {
       setCartProds([...cartProds, product]);
       localStorage.setItem(id, JSON.stringify(product));
-      toast.success("Produto adicionado com sucesso", toastOptions);
+      toast.success('Produto adicionado com sucesso', toastOptions);
     }
   };
 
@@ -199,7 +193,7 @@ function App() {
 
   const handleSearchProducts = async (query: string, isPage: boolean) => {
     // setLoading(true);
-    if (query.trim() === "") {
+    if (query.trim() === '') {
       setSearchResults([]);
       return;
     }
@@ -223,7 +217,7 @@ function App() {
     const updatedCart = cartProds.filter((prod: any) => prod.id !== id);
     setCartProds([...updatedCart]);
     localStorage.removeItem(id);
-    toast.success("Produto removido com sucesso", toastOptions);
+    toast.success('Produto removido com sucesso', toastOptions);
   };
 
   /* Function for clearing cart */
@@ -232,7 +226,7 @@ function App() {
     localStorage.clear();
     setCartProds([]);
     if (hasToast) {
-      toast.success("Carrinho limpo com sucesso", toastOptions);
+      toast.success('Carrinho limpo com sucesso', toastOptions);
     }
   };
 
@@ -243,9 +237,10 @@ function App() {
   };
 
   return (
-    <main className="md:pt-20">
+    <main className={`md:pt-20 ${isCatOpen ? 'overflow-hidden ' : ''} `}>
       <MyContext.Provider
         value={{
+          FILES_URL,
           allProducts,
           setAllProducts,
           allCategories,
@@ -276,6 +271,9 @@ function App() {
           qtyPerPage,
           currentPage,
           setCurrentPage,
+          isCatOpen,
+          setIsCatOpen,
+          handleCatOpen,
         }}
       >
         <ToastContainer />

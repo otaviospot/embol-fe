@@ -1,12 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
-/*const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
-    : 'https://embol-yzffe.ondigitalocean.app/api';
-*/
-
-const BASE_URL = "http://localhost:1337/api";
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_API_URL_PROD
+    : process.env.REACT_APP_API_URL_DEV;
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -31,3 +28,5 @@ export async function edit(url: string, object: any) {
   const { data } = await axiosInstance.put(url, object);
   return data;
 }
+
+export { BASE_URL };

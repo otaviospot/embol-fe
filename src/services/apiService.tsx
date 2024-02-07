@@ -1,4 +1,4 @@
-import { read, create } from "./httpService";
+import { read, create } from './httpService';
 
 export async function apiGetAllProducts(page: number = 1, limit: number = 10) {
   const start = (page - 1) * limit;
@@ -16,9 +16,8 @@ export async function apiFilterProductsByCategory(
 ) {
   const start = (page - 1) * limit;
   const categoryFilterProducts = await read(
-    `/products?filters[category][id][$eq]=${categoryId}&populate=*&pagination[start]=${start}&pagination[limit]=${limit}`
+    `/products?filters[categories][id][$eq]=${categoryId}&populate=*&pagination[start]=${start}&pagination[limit]=${limit}`
   );
-
   return categoryFilterProducts;
 }
 
@@ -33,7 +32,7 @@ export async function apiSeachProds(query: any) {
 }
 
 export async function apiGetAllCategories() {
-  const allCategories = await read("/categories?populate=*");
+  const allCategories = await read('/categories?populate=*');
   return allCategories;
 }
 
@@ -63,6 +62,6 @@ export async function apiCreateQuotation(dataQuotation: any) {
       email: dataQuotation.email,
     },
   };
-  const newQuotation = await create("/cotacoes", payload);
+  const newQuotation = await create('/cotacoes', payload);
   return newQuotation;
 }

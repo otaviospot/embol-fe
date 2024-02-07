@@ -1,8 +1,9 @@
-import style from "../components/categoryButton-style.module.css";
+import style from '../components/categoryButton-style.module.css';
 
-import { useState } from "react";
-import IconComponent from "./IconComponent";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import IconComponent from './IconComponent';
+import { useNavigate } from 'react-router-dom';
+import { MyContext } from '../MyContext';
 
 interface ICategoryBox {
   key: any;
@@ -26,6 +27,8 @@ export default function CategoryButton({
 
   const [triangleTopDown, setIstriangleTopDown] = useState(style.triangleDown);
 
+  const { setCurrentPage, handleCatOpen } = useContext(MyContext);
+
   const toggleDropDown = () => {
     setIsDropDownOpen(!isDropDownOpen);
     isDropDownOpen
@@ -36,12 +39,14 @@ export default function CategoryButton({
   return (
     <>
       <button
-        className={`group flex items-center capitalize w-full text-left text-gray-one text-lg px-6 py-5 border-b border-solid border-stroke-gray hover:bg-blue-one ${
-          children.data.length === 0 ? "" : triangleTopDown
+        className={`group flex items-center capitalize w-full text-left text-gray-one text-md px-6 py-5 border-b border-solid border-stroke-gray hover:bg-blue-one ${
+          children.data.length === 0 ? '' : triangleTopDown
         }`}
         onClick={() => {
           if (children.data.length === 0) {
             navigate(`/categories/${id}`);
+            setCurrentPage(1);
+            handleCatOpen();
           } else {
             toggleDropDown();
           }
@@ -53,20 +58,24 @@ export default function CategoryButton({
             <IconComponent icon={icon} size={iconSize} />
           </span>
         )}
-        <h4 className="text-gray-900 pl-2  group-hover:text-white">{name}</h4>
+        <h4 className="text-gray-900 pl-2 pr-[15px]  group-hover:text-white">
+          {name}
+        </h4>
       </button>
       {children.data.length > 0 && (
         <div
           className={`flex flex-col ${
             isDropDownOpen
-              ? "opacity-100 max-h-screen overflow-visible"
-              : "opacity-0 max-h-0 overflow-hidden"
+              ? 'opacity-100 max-h-screen overflow-visible'
+              : 'opacity-0 max-h-0 overflow-hidden'
           } w-full -z-[1]`}
         >
           <button
             className="group flex pl-10 items-center capitalize w-full text-left text-gray-one text-base px-6 py-2 border-b border-solid border-stroke-gray hover:bg-blue-one"
             onClick={() => {
               navigate(`/categories/${id}`);
+              setCurrentPage(1);
+              handleCatOpen();
             }}
             key={id}
           >
@@ -79,6 +88,8 @@ export default function CategoryButton({
               className="group flex pl-10 items-center capitalize w-full text-left text-gray-one text-base px-6 py-2 border-b border-solid border-stroke-gray hover:bg-blue-one"
               onClick={() => {
                 navigate(`/categories/${child.id}`);
+                setCurrentPage(1);
+                handleCatOpen();
               }}
               key={child.id}
             >

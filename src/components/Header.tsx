@@ -1,13 +1,23 @@
-import { Link } from "react-router-dom";
-import logo from "../assets/images/logo-embol.webp";
-import SeachBox from "./SeachBox";
+import { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../assets/images/logo-embol.webp';
+import SeachBox from './SeachBox';
+import { MyContext } from '../MyContext';
+
 import {
   AiOutlineAppstore,
   AiOutlineInfoCircle,
   AiOutlineMail,
-} from "react-icons/ai";
+  AiOutlineUnorderedList,
+} from 'react-icons/ai';
 
 export default function Header() {
+  const location = useLocation();
+  const { handleCatOpen } = useContext(MyContext);
+  const isProdutosPage =
+    location.pathname === '/products' ||
+    location.pathname.startsWith('/categories');
+
   return (
     <>
       <header className="relative md:fixed w-full top-0 bg-white p-5 h-20 flex flex-row shadow-md items-center justify-between z-10">
@@ -38,8 +48,26 @@ export default function Header() {
           <SeachBox />
         </div>
       </header>
-      <nav className="flex fixed bottom-0 w-full z-10 md:hidden bg-white shadow-sm">
-        <Link to="/products" className="w-1/3 py-3 flex flex-col items-center">
+      <nav className="flex fixed bottom-0 w-full z-20 md:hidden bg-white shadow-sm">
+        <button
+          onClick={handleCatOpen}
+          className={`w-1/4 py-3 flex-col items-center ${
+            isProdutosPage ? 'flex' : 'hidden'
+          }`}
+        >
+          <span className="text-xl">
+            <AiOutlineUnorderedList />
+          </span>
+          <span className="text-center text-sm text-blue-one hover:text-black">
+            Categorias
+          </span>
+        </button>
+        <Link
+          to="/products"
+          className={`${
+            isProdutosPage ? 'w-1/4' : 'w-1/3'
+          } py-3 flex flex-col items-center`}
+        >
           <span className="text-xl">
             <AiOutlineAppstore />
           </span>
@@ -49,7 +77,9 @@ export default function Header() {
         </Link>
         <Link
           to="/quem-somos"
-          className="w-1/3 py-3 flex flex-col items-center"
+          className={`${
+            isProdutosPage ? 'w-1/4' : 'w-1/3'
+          } py-3 flex flex-col items-center`}
         >
           <span className="text-xl">
             <AiOutlineInfoCircle />
@@ -58,7 +88,12 @@ export default function Header() {
             Quem Somos
           </span>
         </Link>
-        <Link to="/contato" className="w-1/3 py-3 flex flex-col items-center">
+        <Link
+          to="/contato"
+          className={`${
+            isProdutosPage ? 'w-1/4' : 'w-1/3'
+          } py-3 flex flex-col items-center`}
+        >
           <span className="text-xl">
             <AiOutlineMail />
           </span>

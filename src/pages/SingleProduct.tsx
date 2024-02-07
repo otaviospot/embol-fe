@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { MyContext } from "../MyContext";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import ReactMarkdown from "react-markdown";
-import Loading from "../components/Loading";
+import { useState, useEffect, useRef, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import { MyContext } from '../MyContext';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import ReactMarkdown from 'react-markdown';
+import Loading from '../components/Loading';
 
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 
-import { apiGetSingleProduct } from "../services/apiService";
-import CartSection from "../components/CartSection";
+import { apiGetSingleProduct } from '../services/apiService';
+import CartSection from '../components/CartSection';
 
 /* Interface for single Product object */
 
@@ -19,7 +19,7 @@ interface ISingleProduct {
   attributes: any;
   name: string;
   description: string;
-  image_gallery: {
+  default_image: {
     data: {
       attributes: {
         formats: {
@@ -38,27 +38,27 @@ export default function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState<ISingleProduct>({
     data: {},
     attributes: {},
-    description: "",
-    name: "",
-    image_gallery: {
+    description: '',
+    name: '',
+    default_image: {
       data: {
         attributes: {
           formats: {
             large: {
-              url: "",
+              url: '',
             },
           },
         },
       },
     },
-    id: "",
-    sku: "",
+    id: '',
+    sku: '',
   });
   /* Get productId from URL */
   const { productId } = useParams();
 
   /* Context */
-  const { loading, setLoading } = useContext(MyContext);
+  const { loading, setLoading, FILES_URL } = useContext(MyContext);
 
   /* State for loading */
   const floatingCart: boolean = true;
@@ -107,42 +107,21 @@ export default function SingleProduct() {
   return (
     <>
       <CartSection floatingCart={floatingCart} />
-      <section className="flex flex-row">
+      <section className="flex flex-col md:flex-row">
         {!loading ? (
           <>
-            <div className="w-1/2 flex-grow-0 flex relative items-center pt-5 pb-10">
-              <button
-                onClick={handlePrevSlide}
-                className="absolute left-0 z-50"
-              >
-                <AiOutlineLeft className="w-6 h-6 fill-red-600" />
-              </button>
-              <button
-                onClick={handleNextSlide}
-                className="absolute right-0 z-50"
-              >
-                <AiOutlineRight className="w-6 h-6 fill-red-600" />
-              </button>
+            <div className="w-full md:w-1/2 flex-grow-0 flex relative items-center pt-5 md:pb-10">
               <div className="w-full">
-                <Slider ref={sliderRef} {...slickSettings}>
-                  {singleProduct.data?.attributes?.image_gallery?.data?.map(
-                    (image: any) => (
-                      <div
-                        className="h-90v !flex justify-center center"
-                        key={image.id}
-                      >
-                        <img
-                          src={`http://localhost:1337${image.attributes.url}`}
-                          alt={image.attributes?.name}
-                          className="w-auto h-auto max-h-full"
-                        />
-                      </div>
-                    )
-                  )}
-                </Slider>
+                <div className="md:h-90v !flex justify-center center">
+                  <img
+                    src={`${FILES_URL}${singleProduct.data?.attributes?.default_image?.data?.attributes?.url}`}
+                    alt={singleProduct.data?.attributes?.name_product}
+                    className="w-full md:w-auto h-auto md:max-h-full"
+                  />
+                </div>
               </div>
             </div>
-            <div className="w-1/2 flex-grow flex flex-col border-solid border-l border-gray-400 p-5">
+            <div className="w-full md:w-1/2 flex-grow flex flex-col border-solid border-l border-gray-400 p-5">
               <h1 className="text-3xl font-bold">
                 {singleProduct.data?.attributes?.name_product}
               </h1>
@@ -151,10 +130,55 @@ export default function SingleProduct() {
               </span>
 
               <div className="flex flex-col gap-3 mt-5">
-                <h2 className="text-md font-semibold">Descrição:</h2>
+                <h2 className="text-xl font-semibold">Descrição:</h2>
                 <ReactMarkdown>
-                  {singleProduct.data?.attributes?.product_description}
+                  {singleProduct.data?.attributes?.product_description &&
+                    singleProduct.data?.attributes?.product_description !==
+                      'null' &&
+                    singleProduct.data?.attributes?.product_description}
                 </ReactMarkdown>
+
+                {singleProduct.data?.attributes?.menor_unidade &&
+                  singleProduct.data?.attributes?.menor_unidade !== 'null' && (
+                    <>
+                      <h2 className="text-md font-semibold">Menor Unidade:</h2>
+                      <p>{singleProduct.data.attributes.menor_unidade}</p>
+                    </>
+                  )}
+
+                {singleProduct.data?.attributes?.unidade_intermediaria &&
+                  singleProduct.data?.attributes?.unidade_intermediaria !==
+                    'null' && (
+                    <>
+                      <h2 className="text-md font-semibold">
+                        Unidade Intermediária:
+                      </h2>
+                      <p>
+                        {singleProduct.data?.attributes?.unidade_intermediaria}
+                      </p>
+                    </>
+                  )}
+                {singleProduct.data?.attributes?.maior_unidade &&
+                  singleProduct.data?.attributes?.maior_unidade !== 'null' && (
+                    <>
+                      <h2 className="text-md font-semibold">Maior Unidade:</h2>
+                      <p>{singleProduct.data?.attributes?.maior_unidade}</p>
+                    </>
+                  )}
+                {singleProduct.data?.attributes?.peso_bruto &&
+                  singleProduct.data?.attributes?.peso_bruto !== 'null' && (
+                    <>
+                      <h2 className="text-md font-semibold">Peso Bruto:</h2>
+                      <p>{singleProduct.data?.attributes?.peso_bruto}</p>
+                    </>
+                  )}
+                {singleProduct.data?.attributes?.fabricante &&
+                  singleProduct.data?.attributes?.fabricante !== 'null' && (
+                    <>
+                      <h2 className="text-md font-semibold">Fabricante:</h2>
+                      <p>{singleProduct.data?.attributes?.fabricante}</p>
+                    </>
+                  )}
               </div>
             </div>
           </>

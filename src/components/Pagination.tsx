@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface IPagination {
   currentPage: number;
@@ -22,8 +22,8 @@ const Pagination: React.FC<IPagination> = ({
           onClick={() => onPageChange(i)}
           className={`pagination-button px-2 py-1 hover:bg-blue-one hover:text-white ${
             i === currentPage
-              ? "active text-white bg-blue-one"
-              : "text-gray-800"
+              ? 'active text-white bg-blue-one'
+              : 'text-gray-800'
           }`}
         >
           {i}
@@ -35,7 +35,7 @@ const Pagination: React.FC<IPagination> = ({
   };
 
   return (
-    <div className="pagination-container flex w-full justify-center py-10">
+    <div className="pagination-container flex w-full justify-center p-10 flex-wrap">
       {currentPage > 1 && (
         <button
           onClick={() => onPageChange(currentPage - 1)}
