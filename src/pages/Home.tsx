@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
-import Loading from '../components/Loading';
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import Loading from "../components/Loading";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import Product from '../components/Product';
-import SectionTitle from '../components/SectionTitle';
-import CategoryBox from '../components/CategoryBox';
-import { MyContext } from '../MyContext';
-import { apiGetHome } from '../services/apiService';
+import Product from "../components/Product";
+import SectionTitle from "../components/SectionTitle";
+import CategoryBox from "../components/CategoryBox";
+import { MyContext } from "../MyContext";
+import { apiGetHome } from "../services/apiService";
 
 export default function Home() {
   const { allCategories, loading, setLoading, FILES_URL } =
@@ -61,12 +61,12 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-start bg-[#F5F5F5]">
-      <div className="h-60 md:h-96 w-full relative">
+      <div className="h-60 md:h-auto w-full relative">
         {!loading ? (
           homeContent.data?.attributes?.home_slider.data?.map(
             (homeSlider: any) => (
               <Slider ref={sliderRef} {...slickSettings}>
-                <div className="h-60 md:h-96 w-full overflow-hidden flex justify-center items-center">
+                <div className="h-60 md:h-auto w-full overflow-hidden flex justify-center items-center">
                   <img
                     className="object-cover w-full h-full md:h-auto"
                     alt="Top"
@@ -95,7 +95,6 @@ export default function Home() {
                     id={category.id}
                     name={category.attributes.categoryName}
                     icon={category.attributes.iconcat}
-                    iconSize={120}
                   />
                 );
               }

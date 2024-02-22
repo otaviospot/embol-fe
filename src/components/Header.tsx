@@ -1,22 +1,22 @@
-import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/images/logo-embol.webp';
-import SeachBox from './SeachBox';
-import { MyContext } from '../MyContext';
+import { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/images/logo-embol.webp";
+import SeachBox from "./SeachBox";
+import { MyContext } from "../MyContext";
 
 import {
   AiOutlineAppstore,
   AiOutlineInfoCircle,
   AiOutlineMail,
   AiOutlineUnorderedList,
-} from 'react-icons/ai';
+} from "react-icons/ai";
 
 export default function Header() {
   const location = useLocation();
   const { handleCatOpen } = useContext(MyContext);
   const isProdutosPage =
-    location.pathname === '/products' ||
-    location.pathname.startsWith('/categories');
+    location.pathname === "/products" ||
+    location.pathname.startsWith("/categories");
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function Header() {
         <button
           onClick={handleCatOpen}
           className={`w-1/4 py-3 flex-col items-center ${
-            isProdutosPage ? 'flex' : 'hidden'
+            isProdutosPage ? "flex" : "hidden"
           }`}
         >
           <span className="text-xl">
@@ -65,7 +65,7 @@ export default function Header() {
         <Link
           to="/products"
           className={`${
-            isProdutosPage ? 'w-1/4' : 'w-1/3'
+            isProdutosPage ? "w-1/4" : "w-1/3"
           } py-3 flex flex-col items-center`}
         >
           <span className="text-xl">
@@ -78,7 +78,7 @@ export default function Header() {
         <Link
           to="/quem-somos"
           className={`${
-            isProdutosPage ? 'w-1/4' : 'w-1/3'
+            isProdutosPage ? "w-1/4" : "w-1/3"
           } py-3 flex flex-col items-center`}
         >
           <span className="text-xl">
@@ -91,7 +91,7 @@ export default function Header() {
         <Link
           to="/contato"
           className={`${
-            isProdutosPage ? 'w-1/4' : 'w-1/3'
+            isProdutosPage ? "w-1/4" : "w-1/3"
           } py-3 flex flex-col items-center`}
         >
           <span className="text-xl">

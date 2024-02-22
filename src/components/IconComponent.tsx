@@ -1,11 +1,11 @@
-import * as GiIcons from 'react-icons/gi';
-import * as MdIcons from 'react-icons/md';
-import * as RiIcons from 'react-icons/ri';
-import * as VscIcons from 'react-icons/vsc';
-import * as IoIcons from 'react-icons/io';
-import * as GoIcons from 'react-icons/go';
-import * as AiIcons from 'react-icons/ai';
-import * as BiIcons from 'react-icons/bi';
+import * as GiIcons from "react-icons/gi";
+import * as MdIcons from "react-icons/md";
+import * as RiIcons from "react-icons/ri";
+import * as VscIcons from "react-icons/vsc";
+import * as IoIcons from "react-icons/io";
+import * as GoIcons from "react-icons/go";
+import * as AiIcons from "react-icons/ai";
+import * as BiIcons from "react-icons/bi";
 
 const allIcons = {
   ...GiIcons,
@@ -20,7 +20,7 @@ const allIcons = {
 
 interface IIconComponent {
   icon: string;
-  size?: number;
+  size?: any;
 }
 type IReactIcon = keyof typeof allIcons;
 
@@ -29,7 +29,7 @@ const IconComponent: React.FC<IIconComponent> = ({ icon, size }) => {
 
   if (undefined === DynamicIconComponent) return <></>;
 
-  return <DynamicIconComponent size={size} />;
+  return <DynamicIconComponent className="max-w-[120px]" size={size} />;
 };
 
 export default IconComponent;

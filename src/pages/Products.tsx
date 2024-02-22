@@ -1,21 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
 
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose } from "react-icons/ai";
 
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
 
-import MainProductList from '../components/MainProductList';
-import Product from '../components/Product';
-import { MyContext } from '../MyContext';
+import MainProductList from "../components/MainProductList";
+import Product from "../components/Product";
+import { MyContext } from "../MyContext";
 
 import {
   apiFilterProductsByCategory,
   apiGetSingleCategory,
-} from '../services/apiService';
+} from "../services/apiService";
 
-import CategoryButton from '../components/CategoryButton';
-import Loading from '../components/Loading';
-import Pagination from '../components/Pagination';
+import CategoryButton from "../components/CategoryButton";
+import Loading from "../components/Loading";
+import Pagination from "../components/Pagination";
 
 export default function Products() {
   const {
@@ -41,7 +41,7 @@ export default function Products() {
   /* Get category id from URL */
   const { catId } = useParams();
 
-  console.log('catid: ' + catId);
+  console.log("catid: " + catId);
 
   /* Fetch Back End Single Category Data */
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Products() {
     <section className="flex flex-row items-start bg-[#F5F5F5] md:min-h-100v-h">
       <div
         className={`fixed w-full ${
-          isCatOpen ? '-translate-x-0' : '-translate-x-full'
+          isCatOpen ? "-translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:w-[366px] transition-all ease-in-out bottom-[64px] md:bottom-0 h-100v-hm md:h-100v-h flex flex-col flex-0-auto z-10 md:z-[5] items-start border-r border-solid border-stroke-gray overflow-auto bg-white`}
       >
         <h2 className="text-xl w-full items-center flex justify-between font-bold text-blue-one flex-grow-0 px-6 py-5 border-b border-solid border-stroke-gray">
@@ -118,21 +118,27 @@ export default function Products() {
         <h1 className="text-2xl font-bold text-blue-one p-5">
           {!loading
             ? catId && categoryContent.data?.attributes.categoryName
-            : 'Carregando...'}
+            : "Carregando..."}
         </h1>
         <MainProductList>
           {!loading ? (
-            allProducts.data?.map((product: any) => (
-              <Product
-                key={product.id}
-                id={product.id}
-                name={product.attributes.name_product}
-                image={
-                  product.attributes.default_image.data?.attributes.formats
-                    .thumbnail.url
-                }
-              />
-            ))
+            allProducts.data
+              ?.sort((a: any, b: any) =>
+                a.attributes.name_product.localeCompare(
+                  b.attributes.name_product
+                )
+              )
+              .map((product: any) => (
+                <Product
+                  key={product.id}
+                  id={product.id}
+                  name={product.attributes.name_product}
+                  image={
+                    product.attributes.default_image.data?.attributes.formats
+                      .thumbnail.url
+                  }
+                />
+              ))
           ) : (
             <Loading loading={loading} />
           )}

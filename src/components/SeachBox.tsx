@@ -1,10 +1,10 @@
-import IconComponent from './IconComponent';
-import SearchProductItem from './SearchProductItem';
-import { useContext, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { MyContext } from '../MyContext';
+import IconComponent from "./IconComponent";
+import SearchProductItem from "./SearchProductItem";
+import { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { MyContext } from "../MyContext";
 
-import { BarLoader } from 'react-spinners';
+import { BarLoader } from "react-spinners";
 
 export default function SeachBox() {
   const {
@@ -20,17 +20,17 @@ export default function SeachBox() {
 
   const { pathname } = useLocation();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputChange = async (e: any) => {
     const newValue = e.target.value;
     setSearchQuery(newValue);
     setSearchBoxLoading(true);
 
-    if (newValue.trim() !== '' && newValue.trim().length >= 3) {
+    if (newValue.trim() !== "" && newValue.trim().length >= 3) {
       await handleSearchProducts(searchQuery, false);
     } else {
-      handleSearchProducts('', false);
+      handleSearchProducts("", false);
       setSearchResults([]); // Limpar resultados se o campo estiver vazio
     }
   };
@@ -39,7 +39,7 @@ export default function SeachBox() {
     e.preventDefault(); // Prevenir recarregamento da página
     setLoading(true);
     if (searchQuery.trim()) {
-      pathname !== '/search' && navigate(`/search`);
+      pathname !== "/search" && navigate(`/search`);
       await handleSearchProducts(searchQuery, true);
     }
   };
@@ -59,13 +59,13 @@ export default function SeachBox() {
         />
         <button
           type="submit"
-          className="bg-[transparent] text-[#8C8C8C] absolute right-0 p-2.5"
+          className="bg-[transparent] max-w-[20px] text-[#8C8C8C] absolute right-2.5"
         >
-          <IconComponent icon={'BiSearch'} size={20} />
+          <IconComponent icon={"BiSearch"} />
         </button>
       </form>
       {searchResults &&
-        searchQuery.trim() !== '' &&
+        searchQuery.trim() !== "" &&
         searchResults.data?.length > 0 && (
           <div className="absolute shadow-xl w-full top-[100%] bg-white opacity-0 p-2.5 flex-col gap-2.5 -z-10 group-hover:opacity-100 group-hover:z-10">
             {!searchBoxLoading ? (
