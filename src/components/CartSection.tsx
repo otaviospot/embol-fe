@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import CartItem from "./CartItem";
-import { MyContext } from "../MyContext";
-import { AiOutlineClose } from "react-icons/ai";
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import CartItem from './CartItem';
+import { MyContext } from '../MyContext';
+import { AiOutlineClose } from 'react-icons/ai';
 
 export default function CartSection({
   floatingCart = false,
@@ -16,21 +16,21 @@ export default function CartSection({
     openCart,
     handleOpenCart,
   } = useContext(MyContext);
-  const qtdProductsText = cartProds.length > 1 ? "produtos" : "produto";
-  const openCartCss = openCart ? "translate-x-0" : "translate-x-full";
+  const qtdProductsText = cartProds.length > 1 ? 'produtos' : 'produto';
+  const openCartCss = openCart ? 'translate-x-0' : 'translate-x-full';
   const floatingCss = floatingCart
     ? `fixed right-0 top-0 transition-transform z-20 h-full ${openCartCss}`
-    : "h-100v-h fixed right-0 ";
+    : 'h-100v-h fixed right-0 ';
 
   return (
     <div
       className={`flex flex-0-auto flex-col bg-white p-5 w-80 border-l border-solid border-gray-400 ${floatingCss}`}
     >
       <h2 className="text-xl font-bold text-red-700 mb-3 flex-grow-0">
-        Carrinho{" "}
+        Carrinho{' '}
         <span className="text-sm">
           {cartProds.length > 0 &&
-            " | " + cartProds.length + " " + qtdProductsText}
+            ' | ' + cartProds.length + ' ' + qtdProductsText}
         </span>
       </h2>
       {floatingCart && (

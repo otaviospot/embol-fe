@@ -26,13 +26,22 @@ export async function apiGetSingleProduct(productId: any) {
   return singleProduct;
 }
 
-export async function apiSeachProds(query: any) {
-  const searchProducts = await read(`/products?_q=${query}&populate=*`);
+export async function apiSeachProds(
+  query: any,
+  page: number = 1,
+  limit: number = 10
+) {
+  const start = (page - 1) * limit;
+  const searchProducts = await read(
+    `/products?_q=${query}&populate=*&pagination[start]=${start}&pagination[limit]=${limit}`
+  );
   return searchProducts;
 }
 
 export async function apiGetAllCategories() {
-  const allCategories = await read('/categories?populate=*');
+  const allCategories = await read(
+    '/categories?populate=*&pagination[pageSize]=100'
+  );
   return allCategories;
 }
 

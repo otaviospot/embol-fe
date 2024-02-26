@@ -191,7 +191,12 @@ function App() {
 
   /* Function for search products */
 
-  const handleSearchProducts = async (query: string, isPage: boolean) => {
+  const handleSearchProducts = async (
+    query: string,
+    isPage: boolean,
+    page: number,
+    limit: number
+  ) => {
     // setLoading(true);
     if (query.trim() === '') {
       setSearchResults([]);
@@ -199,11 +204,12 @@ function App() {
     }
 
     try {
-      const backEndQueryProducts = await apiSeachProds(query);
+      const backEndQueryProducts = await apiSeachProds(query, page, limit);
 
       isPage
         ? setSearchResultsPage(backEndQueryProducts)
         : setSearchResults(backEndQueryProducts);
+      setTotalProducts(backEndQueryProducts.meta.pagination.total);
       setLoading(false);
       setSearchBoxLoading(false);
     } catch (error) {

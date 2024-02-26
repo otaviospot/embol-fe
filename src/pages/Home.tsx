@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-import Loading from "../components/Loading";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import Loading from '../components/Loading';
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import Product from "../components/Product";
-import SectionTitle from "../components/SectionTitle";
-import CategoryBox from "../components/CategoryBox";
-import { MyContext } from "../MyContext";
-import { apiGetHome } from "../services/apiService";
+import Product from '../components/Product';
+import SectionTitle from '../components/SectionTitle';
+import CategoryBox from '../components/CategoryBox';
+import { MyContext } from '../MyContext';
+import { apiGetHome } from '../services/apiService';
 
 export default function Home() {
   const { allCategories, loading, setLoading, FILES_URL } =
@@ -84,22 +84,29 @@ export default function Home() {
         <SectionTitle>Navegue por Categoria</SectionTitle>
         <div className="flex flex-row items-stretch flex-wrap w-full">
           {!loading ? (
-            allCategories.data?.map((category: any) => {
-              if (
-                !category.attributes.categorias_pais.data ||
-                category.attributes.categorias_pais.data?.length === 0
-              ) {
-                return (
-                  <CategoryBox
-                    key={category.id}
-                    id={category.id}
-                    name={category.attributes.categoryName}
-                    icon={category.attributes.iconcat}
-                  />
-                );
-              }
-              return null;
-            })
+            allCategories.data &&
+            allCategories.data
+              ?.sort((a: any, b: any) =>
+                a.attributes.categoryName.localeCompare(
+                  b.attributes.categoryName
+                )
+              )
+              .map((category: any) => {
+                if (
+                  !category.attributes.categorias_pais.data ||
+                  category.attributes.categorias_pais.data?.length === 0
+                ) {
+                  return (
+                    <CategoryBox
+                      key={category.id}
+                      id={category.id}
+                      name={category.attributes.categoryName}
+                      icon={category.attributes.iconcat}
+                    />
+                  );
+                }
+                return null;
+              })
           ) : (
             <Loading loading={loading} />
           )}

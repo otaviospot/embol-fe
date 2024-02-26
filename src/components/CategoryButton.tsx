@@ -66,7 +66,7 @@ export default function CategoryButton({
         <div
           className={`flex flex-col ${
             isDropDownOpen
-              ? 'opacity-100 max-h-screen overflow-visible'
+              ? 'opacity-100 max-h-auto overflow-visible'
               : 'opacity-0 max-h-0 overflow-hidden'
           } w-full -z-[1]`}
         >
@@ -83,21 +83,25 @@ export default function CategoryButton({
               Ver todos produtos
             </h4>
           </button>
-          {children.data?.map((child: any) => (
-            <button
-              className="group flex pl-10 items-center capitalize w-full text-left text-gray-one text-base px-6 py-2 border-b border-solid border-stroke-gray hover:bg-blue-one"
-              onClick={() => {
-                navigate(`/categories/${child.id}`);
-                setCurrentPage(1);
-                handleCatOpen();
-              }}
-              key={child.id}
-            >
-              <h4 className="text-gray-900 pl-2  group-hover:text-white">
-                {child.attributes.categoryName}
-              </h4>
-            </button>
-          ))}
+          {children.data
+            ?.sort((a: any, b: any) =>
+              a.attributes.categoryName.localeCompare(b.attributes.categoryName)
+            )
+            .map((child: any) => (
+              <button
+                className="group flex pl-10 items-center capitalize w-full text-left text-gray-one text-base px-6 py-2 border-b border-solid border-stroke-gray hover:bg-blue-one"
+                onClick={() => {
+                  navigate(`/categories/${child.id}`);
+                  setCurrentPage(1);
+                  handleCatOpen();
+                }}
+                key={child.id}
+              >
+                <h4 className="text-gray-900 pl-2  group-hover:text-white">
+                  {child.attributes.categoryName}
+                </h4>
+              </button>
+            ))}
         </div>
       )}
     </>

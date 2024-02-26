@@ -6,9 +6,23 @@ import MainProductList from '../components/MainProductList';
 import Product from '../components/Product';
 import { MyContext } from '../MyContext';
 
+import Pagination from '../components/Pagination';
+
 export default function Search() {
-  const { searchResultsPage, loading, setLoading } = useContext(MyContext);
+  const {
+    searchResultsPage,
+    loading,
+    qtyPerPage,
+    currentPage,
+    setCurrentPage,
+    totalProducts,
+    handleSearchProducts,
+  } = useContext(MyContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <section className="flex flex-row items-start bg-[#F5F5F5] min-h-100v-h">
@@ -46,6 +60,15 @@ export default function Search() {
             <Loading loading={loading} />
           )}
         </MainProductList>
+        {!loading ? (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalProducts / qtyPerPage)}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </section>
   );

@@ -20,6 +20,7 @@ module.exports = {
       },
       colors: {
         'blue-one': '#175594',
+        'blue-two': '#5ac8fa',
         'gray-one': '#565656',
         'stroke-gray': '#E8E8E8',
       },

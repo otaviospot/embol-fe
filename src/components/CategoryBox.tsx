@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import IconComponent from "./IconComponent";
+import { Link } from 'react-router-dom';
+import IconComponent from './IconComponent';
 
 interface ICategoryBox {
   key: any;
@@ -20,8 +20,8 @@ export default function CategoryBox({ id, name, icon }: ICategoryBox) {
           to={`categories/${id}`}
         >
           {icon && (
-            <span className="text-blue-one transition-all w-1/3 md:w-full flex justify-center items-center group-hover:text-white">
-              <IconComponent icon={icon} size={"80%"} />
+            <span className="text-blue-one transition-all w-1/2 md:w-full flex justify-center items-center group-hover:text-white">
+              <IconComponent icon={icon} size={'80%'} />
             </span>
           )}
 

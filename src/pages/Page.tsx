@@ -50,11 +50,71 @@ export default function Page({ pageId }: any) {
         <div className="w-full max-w-5xl flex flex-col">
           <PageTitle>Quem Somos</PageTitle>
 
-          <div className="w-full flex flex-col p-10 m-0 bg-white shadow-xl">
+          <div className="w-full flex flex-col p-10 m-0 mb-[40px] bg-white shadow-xl rounded-3xl">
             {!loading ? (
               <ReactMarkdown className={style.reactMarkDown}>
                 {pageContent.data?.attributes.texto2}
               </ReactMarkdown>
+            ) : (
+              <Loading loading={loading} />
+            )}
+          </div>
+          <h2 className="text-[30px] mb-5 text-blue-one m-0 font-bold">
+            Lojas embol
+          </h2>
+          <div className="w-full flex flex-row flex-wrap mb-[40px]">
+            {!loading ? (
+              pageContent.data?.attributes?.lojas_embol.map((loja: any) => (
+                <div key={loja.id} className="w-1/2 md:w-1/4 p-2.5">
+                  <div className="w-full group h-full border border-gray rounded-xl bg-white hover:bg-blue-one p-4 flex">
+                    <a
+                      className="w-full h-full flex flex-col justify-center text-center"
+                      href={loja.link}
+                    >
+                      <span className="text-blue-one group-hover:text-white">
+                        <strong>{loja.endereco}</strong>
+                      </span>
+                      <span className="group-hover:text-white">
+                        {loja.cidade_estado}
+                      </span>
+                      <span className="group-hover:text-white">
+                        {loja.telefone}
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <Loading loading={loading} />
+            )}
+          </div>
+          <h2 className="text-[30px] mb-5 text-blue-one m-0 font-bold">
+            Lojas Embol Mais
+          </h2>
+          <div className="w-full flex flex-row flex-wrap mb-[40px]">
+            {!loading ? (
+              pageContent.data?.attributes?.lojas_embol_mais.map(
+                (loja: any) => (
+                  <div key={loja.id} className="w-1/2 md:w-1/4 p-2.5">
+                    <div className="w-full group h-full border border-gray rounded-xl bg-white hover:bg-blue-one p-4 flex">
+                      <a
+                        className="w-full h-full flex flex-col justify-center text-center"
+                        href={loja.link}
+                      >
+                        <span className="text-blue-one group-hover:text-white">
+                          <strong>{loja.endereco}</strong>
+                        </span>
+                        <span className="group-hover:text-white">
+                          {loja.cidade_estado}
+                        </span>
+                        <span className="group-hover:text-white">
+                          {loja.telefone}
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                )
+              )
             ) : (
               <Loading loading={loading} />
             )}
