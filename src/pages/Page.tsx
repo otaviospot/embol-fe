@@ -1,13 +1,13 @@
-import style from '../components/page-style.module.css';
+import style from "../components/page-style.module.css";
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
 
-import Loading from '../components/Loading';
+import Loading from "../components/Loading";
 
-import PageTitle from '../components/PageTitle';
-import { MyContext } from '../MyContext';
-import { apiGetSingleType } from '../services/apiService';
-import ReactMarkdown from 'react-markdown';
+import PageTitle from "../components/PageTitle";
+import { MyContext } from "../MyContext";
+import { apiGetSingleType } from "../services/apiService";
+import ReactMarkdown from "react-markdown";
 
 export default function Page({ pageId }: any) {
   const { loading, setLoading, FILES_URL } = useContext(MyContext);
@@ -34,7 +34,7 @@ export default function Page({ pageId }: any) {
 
   return (
     <section className="flex flex-col items-start bg-[#F5F5F5]">
-      <div className="h-96 bg-gray-500 w-full overflow-hidden flex justify-center items-center">
+      <div className="h-auto md:h-96 bg-gray-500 w-full overflow-hidden flex justify-center items-center">
         {!loading ? (
           <img
             className="object-cover w-full"
@@ -46,11 +46,11 @@ export default function Page({ pageId }: any) {
         )}
       </div>
 
-      <div className="flex flex-col p-10 box-border items-center w-full">
+      <div className="flex flex-col p-5 md:p-10 box-border items-center w-full">
         <div className="w-full max-w-5xl flex flex-col">
           <PageTitle>Quem Somos</PageTitle>
 
-          <div className="w-full flex flex-col p-10 m-0 mb-[40px] bg-white shadow-xl rounded-3xl">
+          <div className="w-full flex flex-col p-5 md:p-10 m-0 mb-[40px] bg-white shadow-xl rounded-3xl">
             {!loading ? (
               <ReactMarkdown className={style.reactMarkDown}>
                 {pageContent.data?.attributes.texto2}
