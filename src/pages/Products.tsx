@@ -43,6 +43,10 @@ export default function Products() {
 
   console.log('catid: ' + catId);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, []);
+
   /* Fetch Back End Single Category Data */
   useEffect(() => {
     const getSingleCat = async (page: number, limit: number) => {
@@ -67,11 +71,8 @@ export default function Products() {
     } else {
       handleShowAllProducts(currentPage, qtyPerPage);
     }
-  }, [catId, currentPage]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [catId, currentPage]);
 
   return (
     <section className="flex flex-row items-start bg-[#F5F5F5] md:min-h-100v-h">

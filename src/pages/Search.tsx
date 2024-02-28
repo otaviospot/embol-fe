@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import Loading from '../components/Loading';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { apiSeachProds } from '../services/apiService';
 
 import MainProductList from '../components/MainProductList';
 import Product from '../components/Product';
@@ -11,18 +12,45 @@ import Pagination from '../components/Pagination';
 export default function Search() {
   const {
     searchResultsPage,
+    setSearchResultsPage,
     loading,
     qtyPerPage,
     currentPage,
     setCurrentPage,
     totalProducts,
-    handleSearchProducts,
   } = useContext(MyContext);
-  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const singleParam = searchParams.get('s');
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, []);
+
+  useEffect(() => {
+    console.log(singleParam);
+    const getSearchProducts = async (
+      param: string,
+      page: number,
+      limit: number
+    ) => {
+      try {
+        const backEndQueryProducts = await apiSeachProds(
+          param ?? '',
+          page,
+          limit
+        );
+
+        setSearchResultsPage(backEndQueryProducts);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getSearchProducts(singleParam ?? '', currentPage, qtyPerPage);
+
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentPage, qtyPerPage, setSearchResultsPage, singleParam]);
 
   return (
     <section className="flex flex-row items-start bg-[#F5F5F5] min-h-100v-h">
@@ -45,17 +73,23 @@ export default function Search() {
             )}
 
           {!loading ? (
-            searchResultsPage.data?.map((product: any) => (
-              <Product
-                key={product.id}
-                id={product.id}
-                name={product.attributes.name_product}
-                image={
-                  product.attributes.default_image.data?.attributes.formats
-                    .thumbnail.url
-                }
-              />
-            ))
+            searchResultsPage.data
+              ?.sort((a: any, b: any) =>
+                a.attributes.name_product.localeCompare(
+                  b.attributes.name_product
+                )
+              )
+              .map((product: any) => (
+                <Product
+                  key={product.id}
+                  id={product.id}
+                  name={product.attributes.name_product}
+                  image={
+                    product.attributes.default_image.data?.attributes.formats
+                      .thumbnail.url
+                  }
+                />
+              ))
           ) : (
             <Loading loading={loading} />
           )}

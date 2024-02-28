@@ -41,8 +41,7 @@ export default function SeachBox() {
     e.preventDefault(); // Prevenir recarregamento da página
     setLoading(true);
     if (searchQuery.trim()) {
-      pathname !== '/search' && navigate(`/search`);
-      await handleSearchProducts(searchQuery, true);
+      pathname !== '/search' && navigate(`/search?s=${searchQuery}`);
     }
   };
 
