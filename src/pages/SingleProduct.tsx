@@ -1,19 +1,20 @@
-import { useState, useEffect, useRef, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { MyContext } from '../MyContext';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import ReactMarkdown from 'react-markdown';
-import Loading from '../components/Loading';
+import { useState, useEffect, useRef, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { MyContext } from "../MyContext";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ReactMarkdown from "react-markdown";
+import Loading from "../components/Loading";
+import placeholder from "../assets/images/img_placeholder.webp";
 
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import { PiVideoFill } from 'react-icons/pi';
+import { PiVideoFill } from "react-icons/pi";
 
-import { apiGetSingleProduct } from '../services/apiService';
-import CartSection from '../components/CartSection';
-import DescriptionItem from '../components/DescriptionItem';
+import { apiGetSingleProduct } from "../services/apiService";
+import CartSection from "../components/CartSection";
+import DescriptionItem from "../components/DescriptionItem";
 
 /* Interface for single Product object */
 
@@ -41,21 +42,21 @@ export default function SingleProduct() {
   const [singleProduct, setSingleProduct] = useState<ISingleProduct>({
     data: {},
     attributes: {},
-    description: '',
-    name: '',
+    description: "",
+    name: "",
     default_image: {
       data: {
         attributes: {
           formats: {
             large: {
-              url: '',
+              url: "",
             },
           },
         },
       },
     },
-    id: '',
-    sku: '',
+    id: "",
+    sku: "",
   });
   /* Get productId from URL */
   const { productId } = useParams();
@@ -125,11 +126,20 @@ export default function SingleProduct() {
             <div className="w-full md:w-1/2 flex-grow-0 flex relative items-center pt-10 md:pt-5 md:pb-10">
               <div className="w-full">
                 <div className="flex justify-center items-center center">
-                  <img
-                    src={`${FILES_URL}${singleProduct.data?.attributes?.default_image?.data?.attributes?.url}`}
-                    alt={singleProduct.data?.attributes?.name_product}
-                    className="w-full md:w-auto h-auto max-h-[600px]"
-                  />
+                  {singleProduct.data?.attributes?.default_image?.data
+                    ?.attributes?.url ? (
+                    <img
+                      src={`${FILES_URL}${singleProduct.data?.attributes?.default_image?.data?.attributes?.url}`}
+                      alt={singleProduct.data?.attributes?.name_produc}
+                      className="w-full max-w-[600px]"
+                    />
+                  ) : (
+                    <img
+                      src={placeholder}
+                      alt={singleProduct.data?.attributes?.name_produc}
+                      className="w-full max-w-[600px]"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -138,7 +148,7 @@ export default function SingleProduct() {
                 {singleProduct.data?.attributes?.name_product}
               </h1>
               {singleProduct.data?.attributes?.ncm &&
-                singleProduct.data?.attributes?.ncm !== 'null' && (
+                singleProduct.data?.attributes?.ncm !== "null" && (
                   <span className="text-sm font-bold">
                     ncm:
                     {singleProduct.data?.attributes?.ncm &&
@@ -146,7 +156,7 @@ export default function SingleProduct() {
                   </span>
                 )}
               {singleProduct.data?.attributes?.ncm &&
-                singleProduct.data?.attributes?.ncm !== 'null' && (
+                singleProduct.data?.attributes?.ncm !== "null" && (
                   <span className="text-sm font-bold">
                     Código Interno:
                     {singleProduct.data?.attributes?.productId &&
@@ -158,12 +168,12 @@ export default function SingleProduct() {
                 <ReactMarkdown>
                   {singleProduct.data?.attributes?.product_description &&
                     singleProduct.data?.attributes?.product_description !==
-                      'null' &&
+                      "null" &&
                     singleProduct.data?.attributes?.product_description}
                 </ReactMarkdown>
                 {singleProduct.data?.attributes?.externallink_prod &&
                   singleProduct.data?.attributes?.externallink_prod !==
-                    'null' && (
+                    "null" && (
                     <div>
                       <a
                         href={singleProduct.data?.attributes?.externallink_prod}
@@ -180,7 +190,7 @@ export default function SingleProduct() {
                 <div className="flex flex-row flex-wrap w-full items-stretch">
                   {singleProduct.data?.attributes?.menor_unidade &&
                     singleProduct.data?.attributes?.menor_unidade !==
-                      'null' && (
+                      "null" && (
                       <DescriptionItem
                         label={`Menor Unidade:`}
                         text={singleProduct.data.attributes.menor_unidade}
@@ -190,7 +200,7 @@ export default function SingleProduct() {
 
                   {singleProduct.data?.attributes?.medida_menor_unidade &&
                     singleProduct.data?.attributes?.medida_menor_unidade !==
-                      'null' && (
+                      "null" && (
                       <DescriptionItem
                         label={`Medida da Menor Unidade:`}
                         text={
@@ -201,7 +211,7 @@ export default function SingleProduct() {
 
                   {singleProduct.data?.attributes?.unidade_intermediaria &&
                     singleProduct.data?.attributes?.unidade_intermediaria !==
-                      'null' && (
+                      "null" && (
                       <DescriptionItem
                         label={`Unidade Intermediária:`}
                         text={
@@ -217,7 +227,7 @@ export default function SingleProduct() {
                   {singleProduct.data?.attributes
                     ?.medida_unidade_intermediaria &&
                     singleProduct.data?.attributes
-                      ?.medida_unidade_intermediaria !== 'null' && (
+                      ?.medida_unidade_intermediaria !== "null" && (
                       <DescriptionItem
                         label={`Medida da Unidade Intermediária:`}
                         text={
@@ -228,7 +238,7 @@ export default function SingleProduct() {
                     )}
                   {singleProduct.data?.attributes?.maior_unidade &&
                     singleProduct.data?.attributes?.maior_unidade !==
-                      'null' && (
+                      "null" && (
                       <DescriptionItem
                         label={`Maior Unidade:`}
                         text={singleProduct.data?.attributes?.maior_unidade}
@@ -237,7 +247,7 @@ export default function SingleProduct() {
                     )}
                   {singleProduct.data?.attributes?.medida_maior_unidade &&
                     singleProduct.data?.attributes?.medida_maior_unidade !==
-                      'null' && (
+                      "null" && (
                       <DescriptionItem
                         label={`Medida da Maior Unidade:`}
                         text={
@@ -246,7 +256,7 @@ export default function SingleProduct() {
                       />
                     )}
                   {singleProduct.data?.attributes?.peso_bruto &&
-                    singleProduct.data?.attributes?.peso_bruto !== 'null' && (
+                    singleProduct.data?.attributes?.peso_bruto !== "null" && (
                       <DescriptionItem
                         label={`Peso Bruto:`}
                         text={singleProduct.data?.attributes?.peso_bruto}
@@ -254,7 +264,7 @@ export default function SingleProduct() {
                       />
                     )}
                   {singleProduct.data?.attributes?.fabricante &&
-                    singleProduct.data?.attributes?.fabricante !== 'null' && (
+                    singleProduct.data?.attributes?.fabricante !== "null" && (
                       <DescriptionItem
                         label={`Fabricante:`}
                         text={singleProduct.data?.attributes?.fabricante}

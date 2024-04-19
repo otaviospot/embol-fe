@@ -1,10 +1,10 @@
-import IconComponent from './IconComponent';
-import SearchProductItem from './SearchProductItem';
-import { useContext, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { MyContext } from '../MyContext';
+import IconComponent from "./IconComponent";
+import SearchProductItem from "./SearchProductItem";
+import { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { MyContext } from "../MyContext";
 
-import { BarLoader } from 'react-spinners';
+import { BarLoader } from "react-spinners";
 
 export default function SeachBox() {
   const {
@@ -16,23 +16,24 @@ export default function SeachBox() {
     setSearchBoxLoading,
     currentPage,
     qtyPerPage,
+    setCurrentPage,
   } = useContext(MyContext);
 
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputChange = async (e: any) => {
     const newValue = e.target.value;
     setSearchQuery(newValue);
     setSearchBoxLoading(true);
 
-    if (newValue.trim() !== '' && newValue.trim().length >= 3) {
+    if (newValue.trim() !== "" && newValue.trim().length >= 3) {
       await handleSearchProducts(searchQuery, false, currentPage, qtyPerPage);
     } else {
-      handleSearchProducts('', false);
+      handleSearchProducts("", false);
       setSearchResults([]); // Limpar resultados se o campo estiver vazio
     }
   };
@@ -41,7 +42,9 @@ export default function SeachBox() {
     e.preventDefault(); // Prevenir recarregamento da página
     setLoading(true);
     if (searchQuery.trim()) {
-      pathname !== '/search' && navigate(`/search?s=${searchQuery}`);
+      setCurrentPage(1);
+      navigate(`/search?s=${searchQuery}`);
+      setSearchQuery("");
     }
   };
 
@@ -62,11 +65,11 @@ export default function SeachBox() {
           type="submit"
           className="bg-[transparent] max-w-[20px] text-[#8C8C8C] absolute right-2.5"
         >
-          <IconComponent icon={'BiSearch'} />
+          <IconComponent icon={"BiSearch"} />
         </button>
       </form>
       {searchResults &&
-        searchQuery.trim() !== '' &&
+        searchQuery.trim() !== "" &&
         searchResults.data?.length > 0 && (
           <div className="absolute shadow-xl w-full flex flex-col top-[100%] max-h-[90vh] bg-white opacity-0 h-0 group-focus-within:h-auto -z-10  group-focus-within:opacity-100 group-focus-within:z-10">
             <div className="flex flex-col gap-0 overflow-y-auto w-full p-2.5 flex-1">

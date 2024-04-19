@@ -1,6 +1,7 @@
-import { useContext } from 'react';
-import { MyContext } from '../MyContext';
-import { Link } from 'react-router-dom';
+import { useContext } from "react";
+import { MyContext } from "../MyContext";
+import { Link } from "react-router-dom";
+import placeholder from "../assets/images/img_placeholder.webp";
 
 interface IProduct {
   key: any;
@@ -17,11 +18,19 @@ export default function SearchProductItem({ name, image, id }: IProduct) {
         <Link to={`/products/${id}`}>
           <div className="flex items-center justify-between gap-2.5 relative">
             <div className="producThumb">
-              <img
-                className="max-w-[40px]"
-                src={`${FILES_URL}${image}`}
-                alt={name}
-              />
+              {image ? (
+                <img
+                  src={`${FILES_URL}${image}`}
+                  alt={name}
+                  className="w-full max-w-[40px]"
+                />
+              ) : (
+                <img
+                  src={placeholder}
+                  alt={name}
+                  className="w-full max-w-[40px]"
+                />
+              )}
             </div>
             <h3 className="text-left text-xs text-gray-one">
               <Link to={`/products/${id}`}>{name}</Link>

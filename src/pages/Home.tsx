@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
-import Loading from '../components/Loading';
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import Loading from "../components/Loading";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import Product from '../components/Product';
-import SectionTitle from '../components/SectionTitle';
-import CategoryBox from '../components/CategoryBox';
-import { MyContext } from '../MyContext';
-import { apiGetHome } from '../services/apiService';
+import Product from "../components/Product";
+import SectionTitle from "../components/SectionTitle";
+import CategoryBox from "../components/CategoryBox";
+import { MyContext } from "../MyContext";
+import { apiGetHome } from "../services/apiService";
 
 export default function Home() {
   const { allCategories, loading, setLoading, FILES_URL } =
@@ -143,7 +143,7 @@ export default function Home() {
                 name={product.attributes.name_product}
                 image={
                   product.attributes.default_image.data?.attributes.formats
-                    .thumbnail.url
+                    .small.url
                 }
               />
             ))
